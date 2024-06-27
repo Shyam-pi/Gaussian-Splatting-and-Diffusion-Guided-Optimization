@@ -139,8 +139,6 @@ Do note that while the reference we have provided is a still frame, we expect yo
 
 **GPU Memory Usage**: This task (with default paramter settings) may use approximately 6GB GPU memory. You can decrease/increase GPU memory utilization for performance by using the `--gaussians_per_splat` argument.
 
-> **Submission:** In your webpage, attach the **GIF** that you obtained by running `render.py`
-
 ## 1.2 Training 3D Gaussian Representations
 
 Now, we will use our 3D Gaussian rasterizer to train a 3D representation of a scene given posed multi-view data. 
@@ -183,12 +181,6 @@ Feel free to experiment with different learning rate values and number of iterat
 
 **GPU Memory Usage**: This task (with default paramter settings) may use approximately 15.5GB GPU memory. You can decrease/increase GPU memory utilization for performance by using the `--gaussians_per_splat` argument.
 
-> **Submission:** In your webpage, include the following details:
-> - Learning rates that you used for each parameter. If you had experimented with multiple sets of learning rates, just mention the set that obtains the best performance in the next question.
-> - Number of iterations that you trained the model for.
-> - The PSNR and SSIM.
-> - Both the GIFs output by `train.py`.
-
 ## 1.3 Extensions
 
 ### 1.3.1 Rendering Using Spherical Harmonics
@@ -217,11 +209,6 @@ For comparison, here is one frame of the rendering obtained when we used only th
   <img src="ref_output/q1_without_sh.png" alt="Q1_Without_SH" width=60%/>
 </p>
 
-> **Submission:** In your webpage, include the following details:
-> - Attach the GIF you obtained using `render.py` for questions 1.3.1 (this question) and 1.1.5 (older question).
-> - Attach 2 or 3 side by side RGB image comparisons of the renderings obtained from both the cases. The images that are being compared should correspond to the same view/frame.
-> - For each of the side by side comparisons that are attached, provide some explanation of differences (if any) that you notice.
-
 ### 1.3.2 Training On a Harder Scene
 
 In section 1.2, we explored training 3D Gaussians to represent a scene. However, that scene is relatively simple. Furthermore, the Gaussians benefitted from being initialized using many high-quality noise free points (which we had already setup for you). Hence, we were able to get reasonably good performance by just using isotropic Gaussians and by adjusting the learning rate.
@@ -239,12 +226,6 @@ Here are a few possible ideas to try and improve performance:
 - The original paper uses adaptive density control to add or reduce Gaussians based on some conditions. You can experiment with a simplified variant of such schemes to improve performance.
 - You can experiment with the initialization parameters in the `Gaussians` class.
 - You can experiment with using anisotropic Gaussians instead of isotropic Gaussians. 
-
-> **Submission:** In your webpage, include the following details:
-> - Follow the submission instructions for question 1.2.2 for this question as well.
-> - As a baseline, use the training setup that you used for question 1.2.2 (isotropic Gaussians, learning rates, loss etc.) for this dataset (make sure `Gaussians` have `init_type="random"`). Save the training progress GIF and PSNR, SSIM metrics.
-> - Compare the training progress GIFs and PSNR, SSIM metrics for both the baseline and your improved approach on this new dataset.
-> - For your best performing method, explain all the modifications that you made to your approach compared to question 1.2 to improve performance.
 
 ---
 
@@ -286,10 +267,6 @@ The following shows reference output that you would expect for sds loss without 
   <em>With guidance (1000 iterations)</em>
 </p>
 
-> <g>**Submission**</g>: On your webpage, show image output for four different prompts. Use the following two example prompts and two more of your own choice.
-* "a hamburger"
-* "a standing corgi dog" 
-
 For each case (with and without guidance), show the "prompt - image" pair and indicate how many iterations you trained to obtain the results.
 
 
@@ -326,9 +303,6 @@ The following shows sampled views for texture maps of different colors. (You sho
   <img src="ref_output/Q22_an_orange_golden_bull.png" alt="Orange bull" width="45%"/>
 </p>
 
-> <g>**Submission**</g>: On your webpage, show the gif of the final textured mesh given two different text prompts. You should be able to vary the color and texture pattern using diffent text prompts.
-
-
 ## 2.3 NeRF Optimization
 In Q2.2, the geometry of the mesh is fixed and we only optimize the color texture. Now we are generalizing the 3D representation from a mesh to a NeRF model, where both the geometry and the color are learnable.
 
@@ -349,21 +323,13 @@ The following shows a sampled view of the optimized NeRF.
   <img src="ref_output/Q23_a_standing_corgi_dog.png" alt="NeRF results" width=30%/>
 </p>
 
-> <g>**Submission**</g>: On your webpage, show the video (.mp4 or .gif) of rendered rgb and depth images for three example prompts, one being "a standing corgi dog" and the other two of your own choice. The rendered object should match the prompt with reasonable geometry and color appearance, i.e. it may not be super photorealistic, but should at least be clear and recognizable object.
-
 ## 2.4 Extensions
 ### 2.4.1 View-dependent text embedding
 In Q2.3, you may notice that the NeRF results may not be 3D consistent, e.g. multiple front faces across different views. That is because SDS optimizes each rendered view independently and does not consider the viewing angle. The DreamFusion proposes a way to use view-dependent text embedding to obtain better 3D consistent results (-> Sec. 3.2. 3. Diffusion loss with view-dependent conditioning).
 The view-dependent conditioning is provided in `utils.py` -> `prepare_embeddings()`. You need to toggle `view_dependent` option to `True` and figure out how to use it in the training loop of `Q23_nerf_optimization.py`.
 
-> <g>**Submission**</g>: On your webpage, show the video of rendered rgb and depth images for at leat two example prompts, one being "a standing corgi dog" and the other one of your own choice. Compare the visual results with what you obtain in Q2.3 and qualitatively analyse the effects of view-dependent text conditioning.
-
 ### 2.4.2 Other 3D representation
 You have seen and tried how to use SDS loss to optimize a 3D representation (mesh and NeRF). In this question, you will explore other 3D representations of your choice, e.g. voxel, NeRF with SDF, gaussian, etc. Choose a representation, try to render it from different camera views, and use SDS loss (with suitable regularizations) to optimize the rendered images, which should update the 3D representation to match the given text prompt. 
 
-> <g>**Submission**</g>: On your webpage, describe which representation you choose, how you render a sampled view, and any other loss/regularaization you have used. Show visual results for at least one text prompt of your choice. Compare the results with NeRF and briefly explain why it works bettter or worse. 
-
 ### 2.4.3 Variation of implementation of SDS loss
-Current SDS loss is implemented in the latent space, i.e. given an RGB image, we first encode it into latent space and then sample the noise. In this question, you can try to implement it in the pixel space, i.e. directly get pixel-space gradients via reconstruction error in pixel space. Since the loss is in pixel space, you can also different variations, e.g. instead of L2 loss, you can use LPIPS loss to compute the gradients. 
-
-> <g>**Submission**</g>: On your webpage, describe how you implement the SDS loss in pixel space and how you compute the gradients. Compare the visual results of NeRF optimization for at least one text prompt. Briefly analyze the results (image quality, training time, etc.) and explain why it works better or worse.  
+Current SDS loss is implemented in the latent space, i.e. given an RGB image, we first encode it into latent space and then sample the noise. In this question, you can try to implement it in the pixel space, i.e. directly get pixel-space gradients via reconstruction error in pixel space. Since the loss is in pixel space, you can also different variations, e.g. instead of L2 loss, you can use LPIPS loss to compute the gradients.  
