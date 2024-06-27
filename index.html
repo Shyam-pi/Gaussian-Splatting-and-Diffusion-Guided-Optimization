@@ -1,0 +1,146 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*">
+**Gaussian Splatting and Diffusion-guided Optimazation**
+
+Author: Shyamsundar Prabhakar Indra
+
+# Part 1: Gaussian Splatting
+
+## 3D Gaussian Rasterization
+
+![3D Gaussian Rasterization](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_render.gif)
+
+## Training 3D Gaussian Representations
+
+- Learning rates:
+  - pre_act_opacities: 0.001
+  - pre_act_scales: 0.001
+  - colours: 0.001
+  - means: 0.0001
+- Number of iterations: 1000
+- PSNR: 27.700, SSIM: 0.923
+
+![Training Final Renders](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_training_final_renders.gif)
+![Training Progress](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_training_progress.gif)
+
+## Extensions
+
+### Rendering Using Spherical Harmonics
+
+
+![Rendering Using Spherical Harmonics](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_render_131.gif)
+
+Comparison:
+
+![Frame 001 with Spherical Coordinates](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/001_sphere.png)
+![Frame 001 Original](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/001.png)
+
+![Frame 018 with Spherical Coordinates](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/018_sphere.png)
+![Frame 018 Original](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/018.png)
+
+Differences: The spherical coordinates rendering has more color variations and slightly lower contrast.
+
+### Training On a Harder Scene
+
+Baseline:
+- PSNR: 16.194, SSIM: 0.576
+
+Tuned:
+- Changes:
+  - Isotropic to False
+  - Doubled learning rate for all parameters
+  - Increased total iterations to 2000
+- PSNR: 17.738, SSIM: 0.656
+
+![Harder Scene - Tuned Final Renders](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_harder_training_final_renders.gif)
+![Harder Scene - Tuned Progress](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/q1_harder_training_progress.gif)
+
+# Part 2: Diffusion-guided Optimization
+
+## Score Distillation Sampling Loss + Image Optimization
+
+![Hamburger SDS Guidance 1](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_iter_1700.png)
+![Hamburger SDS Guidance 0](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_hamburger_iter_400.png)
+
+![Rose SDS Guidance 1](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_iter_1999.png)
+![Rose SDS Guidance 0](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_rose_iter_1400.png)
+
+![Glacier SDS Guidance 1](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_iter_300.png)
+![Glacier SDS Guidance 0](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_a_glacier_iter_400.png)
+
+![Harry Potter SDS Guidance 1](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_h_iter_600.png)
+![Harry Potter SDS Guidance 0](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/output_harry_potter_h_iter_600.png)
+
+## Texture Map Optimization for Mesh
+
+![Hamburger Final Mesh](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/a_hamburger_final_mesh2.gif)
+![Cow Final Mesh](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/a_cow_final_mesh2.gif)
+![Zebra Final Mesh](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/a_zebra_final_mesh.gif)
+![Tree Final Mesh](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/a_tree_final_mesh.gif)
+
+## NeRF Optimization
+
+### Hamburger
+
+- --lambda_entropy 1e-4
+- --lambda_orient 1e-2
+- --iters 2500
+
+![Hamburger RGB Image](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/hamburger_rgb_epoch_24_iter_2500.png)
+
+![Hamburger RGB Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/hamburger_rgb_ep_24.mp4)
+
+![Hamburger Depth Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/hamburger_depth_ep_24.mp4)
+
+### Standing Corgi Dog
+
+- --lambda_entropy 1e-4
+- --lambda_orient 1e-2
+- --iters 3000
+
+![Corgi RGB Image](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_rgb_epoch_29_iter_3000.png)
+
+![Corgi RGB Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_rgb_ep_29.mp4)
+
+![Corgi Depth Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_depth_ep_29.mp4)
+
+### Rose
+
+- --lambda_entropy 1e-3
+- --lambda_orient 1e-2
+- --iters 3000
+
+![Rose RGB Image](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_rgb_epoch_29_iter_3000.png)
+
+![Rose RGB Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_rgb_ep_29.mp4)
+
+![Rose Depth Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_depth_ep_29.mp4)
+
+## Extensions
+
+### View-Dependent Text Embedding
+
+#### Corgi Dog
+
+- --lambda_entropy 1e-4
+- --lambda_orient 1e-2
+- --iters 3000
+
+![Corgi View-Dependent Rendering](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_view.png)
+
+![Corgi View-Dependent RGB Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_view.mp4)
+
+![Corgi View-Dependent Depth Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/corgi_view_d.mp4)
+
+#### Rose
+
+- --lambda_entropy 1e-3
+- --lambda_orient 1e-2
+- --iters 3000
+
+![Rose RGB Image](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_rgb_epoch_29_iter_3000.png)
+
+![Rose RGB Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_rgb_ep_29.mp4)
+
+![Rose Depth Video](https://raw.githubusercontent.com/SilvesterYu/LearningFor3DVision-CMU16825/main/proj4/results/rose_depth_ep_29.mp4)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js?" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
