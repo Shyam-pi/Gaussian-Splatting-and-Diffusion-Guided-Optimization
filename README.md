@@ -15,6 +15,8 @@ Diffusion-guided Optimization:
 - Implementing Score Distillation Sampling (SDS) loss.
 - Applying SDS loss to various applications like image optimization, mesh texture optimization, and NeRF optimization.
 
+**Results**: All the results and inferences from this project can be found in this webpage : https://shyam-pi.github.io/Gaussian-Splatting-and-Diffusion-Guided-Optimization/
+
 # 0. Environment Setup
 
 - You may need: 
