@@ -1,4 +1,4 @@
-# Volume Rendering and Neural Radiance Fields
+# Gaussian Splatting and Diffusion-Guided Optimization
 
 **Note**:  This is the completed assignment 4 from CMU's '16-825: Learning for 3D Vision' course which can be found at https://github.com/learning3d/assignment4 
 
